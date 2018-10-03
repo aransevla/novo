@@ -85,9 +85,12 @@ public class GM : MonoBehaviour {
 	public void KillPlayer() {
 
 		 if (player!=null) {
+			 StartCoroutine (MuteMusic(true,0f));
+			 AudioManager.instance.PlayFailSound(player.gameObject);
 			 Destroy(player.gameObject);
 			 DecrementLives();
 			 if (data.lifeCount>0) {
+			 StartCoroutine(MuteMusic(false,3.5f));
 			 Invoke("RespawnPlayer", timeToRespawn);
 			 }
 			 else {
@@ -95,6 +98,12 @@ public class GM : MonoBehaviour {
 			 }
 		 }
 	}
+
+	IEnumerator MuteMusic(bool value,float delay) {
+		yield return new WaitForSeconds (delay);
+		Camera.main.GetComponentInChildren<AudioSource>().mute=value;
+	}
+
 	public void ExpirePlayer() {
 		 if (player!=null) {
 			 Destroy(player.gameObject);
